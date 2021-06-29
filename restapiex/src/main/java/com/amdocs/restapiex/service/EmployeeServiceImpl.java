@@ -25,7 +25,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	public Employee getEmployeeById(String id) {
 		// TODO Auto-generated method stub
-		return null;
+		return employeeRepository.getEmployeeById(id);
 	}
 
 	public List<Employee> getEmployees() {

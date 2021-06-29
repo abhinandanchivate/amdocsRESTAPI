@@ -2,6 +2,7 @@ package com.amdocs.restapiex.repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -47,8 +48,36 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
 	}
 
 	public Employee getEmployeeById(String id) {
-		// TODO Auto-generated method stub
+		Connection connection = dbUtils.getConnection();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			 preparedStatement = connection.prepareStatement("select * from employee where empid=?");
+			preparedStatement.setString(1, id);
+			resultSet =preparedStatement.executeQuery();
+			
+			
+				if(resultSet.next()) {
+					Employee employee = new Employee();
+					employee.setEmpId(resultSet.getString("empid"));
+					employee.setFirstName(resultSet.getString("firstname"));
+					employee.setLastName(resultSet.getString("lastname"));
+					return employee;
+					
+			}
+			else {
+				return null;
+			}
+			
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			dbUtils.closeConnection(connection);
+		}
 		return null;
+		
 	}
 
 	public List<Employee> getEmployees() {
